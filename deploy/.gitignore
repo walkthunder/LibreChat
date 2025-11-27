@@ -1,0 +1,11 @@
+# 忽略临时文件
+*.tar
+*.tar.gz
+*.log
+*.bak
+
+# 忽略本地配置（如果有敏感信息）
+# config.sh
+
+# 忽略生成的密钥文件
+secrets.txt

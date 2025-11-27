@@ -39,10 +39,36 @@ fi
 print_success "Docker 运行正常"
 
 # 检查配置文件
+print_info "检查本地配置文件..."
+
 if [ ! -f ".env" ]; then
-    print_error ".env 文件不存在，请先配置环境变量"
+    print_error ".env 文件不存在"
+    print_info "请从 .env.example 复制并配置 .env 文件"
     exit 1
 fi
+print_success ".env 文件存在"
+
+# 检查 Docker Compose 配置文件
+if [ ! -f "deploy-compose.yml" ] && [ ! -f "docker-compose.yml" ]; then
+    print_error "找不到 docker-compose 配置文件"
+    print_info "请确保 deploy-compose.yml 或 docker-compose.yml 存在"
+    exit 1
+fi
+
+if [ -f "deploy-compose.yml" ]; then
+    print_success "deploy-compose.yml 文件存在"
+else
+    print_success "docker-compose.yml 文件存在"
+fi
+
+# 检查 librechat.yaml（可选但推荐）
+if [ ! -f "librechat.yaml" ]; then
+    print_warning "librechat.yaml 不存在，将使用默认配置"
+    print_info "建议从 librechat.example.yaml 复制并配置 librechat.yaml"
+else
+    print_success "librechat.yaml 文件存在"
+fi
+
 print_success "配置文件检查通过"
 
 # 构建 Docker 镜像
@@ -98,27 +124,54 @@ else
 fi
 
 # 传输配置文件
-print_step "步骤 5/6: 传输配置文件"
+print_step "步骤 5/6: 传输配置文件到服务器"
 
 print_info "传输 .env 文件..."
 $SCP_CMD ".env" "$SERVER_USER@$SERVER_IP:$SERVER_PATH/"
+if [ $? -ne 0 ]; then
+    print_error ".env 文件传输失败"
+    exit 1
+fi
+print_success ".env 文件传输成功"
 
 print_info "传输 docker-compose 配置..."
 if [ -f "deploy-compose.yml" ]; then
     $SCP_CMD "deploy-compose.yml" "$SERVER_USER@$SERVER_IP:$SERVER_PATH/"
+    if [ $? -ne 0 ]; then
+        print_error "deploy-compose.yml 传输失败"
+        exit 1
+    fi
+    print_success "deploy-compose.yml 传输成功"
 else
     $SCP_CMD "docker-compose.yml" "$SERVER_USER@$SERVER_IP:$SERVER_PATH/"
+    if [ $? -ne 0 ]; then
+        print_error "docker-compose.yml 传输失败"
+        exit 1
+    fi
+    print_success "docker-compose.yml 传输成功"
 fi
 
 if [ -f "librechat.yaml" ]; then
     print_info "传输 librechat.yaml 配置..."
     $SCP_CMD "librechat.yaml" "$SERVER_USER@$SERVER_IP:$SERVER_PATH/"
+    if [ $? -ne 0 ]; then
+        print_warning "librechat.yaml 传输失败，将使用默认配置"
+    else
+        print_success "librechat.yaml 传输成功"
+    fi
+else
+    print_warning "跳过 librechat.yaml（文件不存在）"
 fi
 
 print_info "传输远程部署脚本..."
 $SCP_CMD "$SCRIPT_DIR/remote-deploy.sh" "$SERVER_USER@$SERVER_IP:$SERVER_PATH/"
+if [ $? -ne 0 ]; then
+    print_error "远程部署脚本传输失败"
+    exit 1
+fi
+print_success "远程部署脚本传输成功"
 
-print_success "配置文件传输完成"
+print_success "所有配置文件传输完成"
 
 # 清理本地临时文件
 print_info "清理本地镜像文件..."
