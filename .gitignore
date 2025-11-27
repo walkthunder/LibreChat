@@ -116,6 +116,12 @@ auth.json
 # User uploads
 uploads/
 
+# Docker images export
+docker-images/
+*.tar.gz
+*.tar
+
+
 # owner
 release/
 
