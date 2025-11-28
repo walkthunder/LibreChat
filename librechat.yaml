@@ -207,27 +207,19 @@ endpoints:
   #   retrievalModels: ["gpt-4-turbo-preview"]
   #   # (optional) Assistant Capabilities available to all users. Omit the ones you wish to exclude. Defaults to list below.
   #   capabilities: ["code_interpreter", "retrieval", "actions", "tools", "image_vision"]
-  # agents:
-  #   # (optional) Default recursion depth for agents, defaults to 25
-  #   recursionLimit: 50
-  #   # (optional) Max recursion depth for agents, defaults to 25
-  #   maxRecursionLimit: 100
-  #   # (optional) Disable the builder interface for agents
-  #   disableBuilder: false
-  #   # (optional) Maximum total citations to include in agent responses, defaults to 30
-  #   maxCitations: 30
-  #   # (optional) Maximum citations per file to include in agent responses, defaults to 7
-  #   maxCitationsPerFile: 7
-  #   # (optional) Minimum relevance score for sources to be included in responses, defaults to 0.45 (45% relevance threshold)
-  #   # Set to 0.0 to show all sources (no filtering), or higher like 0.7 for stricter filtering
-  #   minRelevanceScore: 0.45
-  #   # (optional) Agent Capabilities available to all users. Omit the ones you wish to exclude. Defaults to list below.
-  #   capabilities: ["execute_code", "file_search", "actions", "tools"]
+  agents:
+    # Enable agents with DeepSeek models
+    disableBuilder: false
+    # Agent Capabilities - enable file_search for document retrieval
+    capabilities: ["tools", "actions", "file_search"]
+    # Optional: Set recursion limits
+    recursionLimit: 25
+    maxRecursionLimit: 50
   custom:
     # DeepSeek Configuration
-    - name: 'DeepSeek'
+    - name: 'deepseek'
       apiKey: '${DEEPSEEK_API_KEY}'
-      baseURL: 'https://api.deepseek.com'
+      baseURL: 'https://api.deepseek.com/v1'
       models:
         default:
           - 'deepseek-chat'
@@ -238,6 +230,10 @@ endpoints:
       modelDisplayLabel: 'DeepSeek'
       # DeepSeek uses OpenAI-compatible API format
       dropParams: []
+      # Add these parameters for better compatibility
+      summarize: false
+      summaryModel: 'deepseek-chat'
+      forcePrompt: false
 # Example modelSpecs configuration showing grouping options
 # The 'group' field organizes model specs in the UI selector:
 # - If 'group' matches an endpoint name (e.g., "openAI", "groq"), the spec appears nested under that endpoint
