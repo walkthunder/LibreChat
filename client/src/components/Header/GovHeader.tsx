@@ -64,7 +64,7 @@ export default function GovHeader() {
 
               {/* 语言切换 */}
               <a
-                href="/en"
+                href="/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gov-primary hover:text-gov-primary-light flex items-center gap-1 transition-colors"
