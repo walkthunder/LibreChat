@@ -210,30 +210,24 @@ endpoints:
   agents:
     # Enable agents with DeepSeek models
     disableBuilder: false
-    # Agent Capabilities - enable file_search for document retrieval
-    capabilities: ["tools", "actions", "file_search"]
+    # Agent Capabilities - disable file_search as DeepSeek doesn't support it
+    # Files should be uploaded as text context instead
+    capabilities: ["tools", "actions", "context"]
     # Optional: Set recursion limits
     recursionLimit: 25
     maxRecursionLimit: 50
   custom:
-    # DeepSeek Configuration
-    - name: 'deepseek'
-      apiKey: '${DEEPSEEK_API_KEY}'
-      baseURL: 'https://api.deepseek.com/v1'
+    # DeepSeek Configuration - Following official documentation
+    - name: "Deepseek"
+      apiKey: "${DEEPSEEK_API_KEY}"
+      baseURL: "https://api.deepseek.com/v1"
+      capabilities: "context"
       models:
-        default:
-          - 'deepseek-chat'
-          - 'deepseek-reasoner'
+        default: ["deepseek-chat", "deepseek-coder", "deepseek-reasoner"]
         fetch: false
       titleConvo: true
-      titleModel: 'deepseek-chat'
-      modelDisplayLabel: 'DeepSeek'
-      # DeepSeek uses OpenAI-compatible API format
-      dropParams: []
-      # Add these parameters for better compatibility
-      summarize: false
-      summaryModel: 'deepseek-chat'
-      forcePrompt: false
+      titleModel: "deepseek-chat"
+      modelDisplayLabel: "Deepseek"
 # Example modelSpecs configuration showing grouping options
 # The 'group' field organizes model specs in the UI selector:
 # - If 'group' matches an endpoint name (e.g., "openAI", "groq"), the spec appears nested under that endpoint
@@ -290,13 +284,25 @@ endpoints:
 
 fileConfig:
   endpoints:
-    # Disable file uploads for DeepSeek as it doesn't support file/document analysis
-    deepseek:
-      disabled: true
+    # DeepSeek endpoint - MUST match endpoint name exactly (case-sensitive)
+    # Files will be processed as text context via RAG API
+    Deepseek:
+      disabled: false
+      fileLimit: 10
+      fileSizeLimit: 20
+      totalSizeLimit: 50
+      supportedMimeTypes:
+        - "application/pdf"
+        - "text/.*"
+        - "application/vnd.openxmlformats-officedocument.*"
+        - "application/msword"
+        - "application/vnd.ms-excel"
+        - "application/vnd.ms-powerpoint"
     default:
-      totalSizeLimit: 20
-  serverFileSizeLimit: 100  # Global server file size limit in MB
-  avatarSizeLimit: 2  # Limit for user avatar image size in MB
+      totalSizeLimit: 50
+      fileSizeLimit: 20
+  serverFileSizeLimit: 100
+  avatarSizeLimit: 2
 #   imageGeneration: # Image Gen settings, either percentage or px
 #     percentage: 100
 #     px: 1024
