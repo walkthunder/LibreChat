@@ -4,6 +4,8 @@ import './locales/i18n';
 import App from './App';
 import './style.css';
 import './mobile.css';
+import './styles/gov-theme.css'; // 政府风格主题
+import './styles/footer-links.css'; // 友情链接样式
 import { ApiErrorBoundaryProvider } from './hooks/ApiErrorBoundaryContext';
 import 'katex/dist/katex.min.css';
 import 'katex/dist/contrib/copy-tex.js';

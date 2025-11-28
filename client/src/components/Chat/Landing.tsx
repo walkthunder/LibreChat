@@ -71,41 +71,27 @@ export default function Landing({ centerFormOnLanding }: { centerFormOnLanding: 
   const description = (entity?.description || conversation?.greeting) ?? '';
 
   const getGreeting = useCallback(() => {
+    // 使用配置的自定义欢迎语
     if (typeof startupConfig?.interface?.customWelcome === 'string') {
       const customWelcome = startupConfig.interface.customWelcome;
       // Replace {{user.name}} with actual user name if available
       if (user?.name && customWelcome.includes('{{user.name}}')) {
         return customWelcome.replace(/{{user.name}}/g, user.name);
       }
+      // 如果用户已登录，在欢迎语后添加用户姓名
+      if (user?.name) {
+        return `${customWelcome}，${user.name}`;
+      }
       return customWelcome;
     }
 
-    const now = new Date();
-    const hours = now.getHours();
-
-    const dayOfWeek = now.getDay();
-    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-
-    // Early morning (midnight to 4:59 AM)
-    if (hours >= 0 && hours < 5) {
-      return localize('com_ui_late_night');
+    // 如果没有配置自定义欢迎语，使用默认的专业欢迎语（移除通用问候语）
+    const defaultWelcome = '欢迎使用无线随申查（开放版）';
+    if (user?.name) {
+      return `${defaultWelcome}，${user.name}`;
     }
-    // Morning (6 AM to 11:59 AM)
-    else if (hours < 12) {
-      if (isWeekend) {
-        return localize('com_ui_weekend_morning');
-      }
-      return localize('com_ui_good_morning');
-    }
-    // Afternoon (12 PM to 4:59 PM)
-    else if (hours < 17) {
-      return localize('com_ui_good_afternoon');
-    }
-    // Evening (5 PM to 8:59 PM)
-    else {
-      return localize('com_ui_good_evening');
-    }
-  }, [localize, startupConfig?.interface?.customWelcome, user?.name]);
+    return defaultWelcome;
+  }, [startupConfig?.interface?.customWelcome, user?.name]);
 
   const handleLineCountChange = useCallback((count: number) => {
     setTextHasMultipleLines(count > 1);
@@ -138,10 +124,11 @@ export default function Landing({ centerFormOnLanding }: { centerFormOnLanding: 
     return margin;
   }, [lineCount, description, textHasMultipleLines, contentHeight]);
 
-  const greetingText =
-    typeof startupConfig?.interface?.customWelcome === 'string'
-      ? getGreeting()
-      : getGreeting() + (user?.name ? ', ' + user.name : '');
+  const greetingText = getGreeting();
+  
+  // 获取系统功能描述
+  const systemDescription = startupConfig?.interface?.appDescription || 
+    '本系统为无线电监测站工作人员提供智能问答服务，协助处理无线电监测、干扰查找、设备检测、频谱分析等相关工作';
 
   return (
     <div
@@ -204,9 +191,10 @@ export default function Landing({ centerFormOnLanding }: { centerFormOnLanding: 
             />
           )}
         </div>
-        {description && (
-          <div className="animate-fadeIn mt-4 max-w-md text-center text-sm font-normal text-text-primary">
-            {description}
+        {/* 显示系统功能描述或实体描述 */}
+        {(description || systemDescription) && (
+          <div className="animate-fadeIn mt-4 max-w-2xl text-center text-sm font-normal text-text-secondary">
+            {description || systemDescription}
           </div>
         )}
       </div>

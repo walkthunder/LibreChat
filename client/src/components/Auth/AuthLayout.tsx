@@ -60,11 +60,16 @@ function AuthLayout({
     <div className="relative flex min-h-screen flex-col bg-white dark:bg-gray-900">
       <Banner />
       <BlinkAnimation active={isFetching}>
-        <div className="mt-6 h-10 w-full bg-cover">
+        <div className="mt-6 h-16 w-full bg-cover">
           <img
-            src="assets/logo.svg"
+            src="assets/radio-monitoring-logo.svg"
             className="h-full w-full object-contain"
-            alt={localize('com_ui_logo', { 0: startupConfig?.appTitle ?? 'LibreChat' })}
+            alt={startupConfig?.appTitle ?? '无线随申查（开放版）'}
+            onError={(e) => {
+              // 如果自定义Logo加载失败，回退到默认Logo
+              const target = e.target as HTMLImageElement;
+              target.src = 'assets/logo.svg';
+            }}
           />
         </div>
       </BlinkAnimation>

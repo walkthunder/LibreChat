@@ -13,6 +13,14 @@ module.exports = {
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
       mono: ['Roboto Mono', 'monospace'],
+      // 政府风格字体
+      gov: [
+        'Microsoft YaHei',
+        'Source Han Sans CN',
+        'PingFang SC',
+        'Hiragino Sans GB',
+        'sans-serif',
+      ],
     },
     // fontFamily: {
     //   sans: ['Söhne', 'sans-serif'],
@@ -58,6 +66,26 @@ module.exports = {
         'slide-out-right': 'slide-out-right 300ms cubic-bezier(0.25, 0.1, 0.25, 1)',
       },
       colors: {
+        // 政府风格配色
+        'gov-primary': {
+          DEFAULT: '#1E3A8A', // 深蓝色主色调
+          light: '#3B82F6',
+          dark: '#1E40AF',
+        },
+        'gov-accent': {
+          DEFAULT: '#DC2626', // 红色强调色
+          light: '#EF4444',
+          dark: '#B91C1C',
+        },
+        'gov-background': {
+          DEFAULT: '#F9FAFB', // 浅灰背景
+          dark: '#111827', // 深色模式背景
+        },
+        'gov-text': {
+          primary: '#111827',
+          secondary: '#6B7280',
+          inverse: '#FFFFFF',
+        },
         gray: {
           20: '#ececf1',
           50: '#f7f7f8',
@@ -154,6 +182,13 @@ module.exports = {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
+        // 政府风格圆角（方正风格）
+        gov: '4px',
+      },
+      boxShadow: {
+        // 政府风格阴影
+        gov: '0 2px 8px rgba(0, 0, 0, 0.1)',
+        'gov-lg': '0 4px 16px rgba(0, 0, 0, 0.15)',
       },
     },
   },

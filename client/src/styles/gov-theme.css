@@ -1,0 +1,339 @@
+/**
+ * 政府风格主题 - 无线随申查（开放版）
+ * 为上海市无线电监测站定制的主题样式
+ */
+
+/* ==================== 浅色模式 ==================== */
+:root {
+  /* 政府主色调 - 深蓝色 */
+  --gov-primary: #1E3A8A;
+  --gov-primary-light: #3B82F6;
+  --gov-primary-dark: #1E40AF;
+  
+  /* 政府强调色 - 红色 */
+  --gov-accent: #DC2626;
+  --gov-accent-light: #EF4444;
+  --gov-accent-dark: #B91C1C;
+  
+  /* 背景色 */
+  --gov-background: #F9FAFB;
+  --gov-background-secondary: #FFFFFF;
+  --gov-background-tertiary: #F3F4F6;
+  
+  /* 文字颜色 */
+  --gov-text-primary: #111827;
+  --gov-text-secondary: #6B7280;
+  --gov-text-tertiary: #9CA3AF;
+  --gov-text-inverse: #FFFFFF;
+  
+  /* 边框颜色 */
+  --gov-border-light: #E5E7EB;
+  --gov-border-medium: #D1D5DB;
+  --gov-border-heavy: #9CA3AF;
+  
+  /* 状态颜色 */
+  --gov-success: #10B981;
+  --gov-warning: #F59E0B;
+  --gov-error: #EF4444;
+  --gov-info: #3B82F6;
+  
+  /* 阴影 */
+  --gov-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --gov-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
+  
+  /* 圆角 */
+  --gov-radius: 4px;
+  --gov-radius-lg: 8px;
+  
+  /* 过渡动画 */
+  --gov-transition: all 0.2s ease-in-out;
+}
+
+/* ==================== 深色模式 ==================== */
+.dark {
+  /* 政府主色调 - 深色模式调整 */
+  --gov-primary: #3B82F6;
+  --gov-primary-light: #60A5FA;
+  --gov-primary-dark: #2563EB;
+  
+  /* 政府强调色 - 深色模式调整 */
+  --gov-accent: #EF4444;
+  --gov-accent-light: #F87171;
+  --gov-accent-dark: #DC2626;
+  
+  /* 背景色 - 深色模式 */
+  --gov-background: #111827;
+  --gov-background-secondary: #1F2937;
+  --gov-background-tertiary: #374151;
+  
+  /* 文字颜色 - 深色模式 */
+  --gov-text-primary: #F9FAFB;
+  --gov-text-secondary: #D1D5DB;
+  --gov-text-tertiary: #9CA3AF;
+  --gov-text-inverse: #111827;
+  
+  /* 边框颜色 - 深色模式 */
+  --gov-border-light: #374151;
+  --gov-border-medium: #4B5563;
+  --gov-border-heavy: #6B7280;
+  
+  /* 阴影 - 深色模式 */
+  --gov-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --gov-shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* ==================== 全局样式应用 ==================== */
+
+/* 应用政府风格字体 */
+body {
+  font-family: 'Microsoft YaHei', 'Source Han Sans CN', 'PingFang SC', 'Hiragino Sans GB', 'Inter', sans-serif;
+}
+
+/* 主要按钮样式 */
+.btn-gov-primary {
+  background-color: var(--gov-primary);
+  color: var(--gov-text-inverse);
+  border-radius: var(--gov-radius);
+  transition: var(--gov-transition);
+  box-shadow: var(--gov-shadow);
+}
+
+.btn-gov-primary:hover {
+  background-color: var(--gov-primary-dark);
+  box-shadow: var(--gov-shadow-lg);
+}
+
+/* 强调按钮样式 */
+.btn-gov-accent {
+  background-color: var(--gov-accent);
+  color: var(--gov-text-inverse);
+  border-radius: var(--gov-radius);
+  transition: var(--gov-transition);
+}
+
+.btn-gov-accent:hover {
+  background-color: var(--gov-accent-dark);
+}
+
+/* 卡片样式 */
+.card-gov {
+  background-color: var(--gov-background-secondary);
+  border: 1px solid var(--gov-border-light);
+  border-radius: var(--gov-radius);
+  box-shadow: var(--gov-shadow);
+  transition: var(--gov-transition);
+}
+
+.card-gov:hover {
+  box-shadow: var(--gov-shadow-lg);
+  border-color: var(--gov-border-medium);
+}
+
+/* 输入框样式 */
+.input-gov {
+  background-color: var(--gov-background-secondary);
+  border: 1px solid var(--gov-border-medium);
+  border-radius: var(--gov-radius);
+  color: var(--gov-text-primary);
+  transition: var(--gov-transition);
+}
+
+.input-gov:focus {
+  outline: none;
+  border-color: var(--gov-primary);
+  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+}
+
+/* 链接样式 */
+.link-gov {
+  color: var(--gov-primary);
+  text-decoration: none;
+  transition: var(--gov-transition);
+}
+
+.link-gov:hover {
+  color: var(--gov-primary-dark);
+  text-decoration: underline;
+}
+
+/* 标题样式 */
+.heading-gov {
+  color: var(--gov-text-primary);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* 分隔线样式 */
+.divider-gov {
+  border-color: var(--gov-border-light);
+}
+
+/* 导航栏样式 */
+.nav-gov {
+  background-color: var(--gov-background-secondary);
+  border-right: 1px solid var(--gov-border-light);
+}
+
+/* 头部样式 */
+.header-gov {
+  background-color: var(--gov-background-secondary);
+  border-bottom: 2px solid var(--gov-primary);
+  box-shadow: var(--gov-shadow);
+}
+
+/* 页脚样式 */
+.footer-gov {
+  background-color: var(--gov-background-tertiary);
+  border-top: 2px solid var(--gov-primary);
+  color: var(--gov-text-secondary);
+}
+
+/* 徽章样式 */
+.badge-gov {
+  background-color: var(--gov-primary);
+  color: var(--gov-text-inverse);
+  border-radius: var(--gov-radius);
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* 警告样式 */
+.alert-gov-warning {
+  background-color: #FEF3C7;
+  border-left: 4px solid var(--gov-warning);
+  color: #92400E;
+  padding: 12px 16px;
+  border-radius: var(--gov-radius);
+}
+
+.dark .alert-gov-warning {
+  background-color: #78350F;
+  color: #FEF3C7;
+}
+
+/* 错误样式 */
+.alert-gov-error {
+  background-color: #FEE2E2;
+  border-left: 4px solid var(--gov-error);
+  color: #991B1B;
+  padding: 12px 16px;
+  border-radius: var(--gov-radius);
+}
+
+.dark .alert-gov-error {
+  background-color: #7F1D1D;
+  color: #FEE2E2;
+}
+
+/* 成功样式 */
+.alert-gov-success {
+  background-color: #D1FAE5;
+  border-left: 4px solid var(--gov-success);
+  color: #065F46;
+  padding: 12px 16px;
+  border-radius: var(--gov-radius);
+}
+
+.dark .alert-gov-success {
+  background-color: #064E3B;
+  color: #D1FAE5;
+}
+
+/* 信息样式 */
+.alert-gov-info {
+  background-color: #DBEAFE;
+  border-left: 4px solid var(--gov-info);
+  color: #1E40AF;
+  padding: 12px 16px;
+  border-radius: var(--gov-radius);
+}
+
+.dark .alert-gov-info {
+  background-color: #1E3A8A;
+  color: #DBEAFE;
+}
+
+/* 表格样式 */
+.table-gov {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-gov th {
+  background-color: var(--gov-primary);
+  color: var(--gov-text-inverse);
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid var(--gov-primary-dark);
+}
+
+.table-gov td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--gov-border-light);
+}
+
+.table-gov tr:hover {
+  background-color: var(--gov-background-tertiary);
+}
+
+/* 加载动画 */
+.spinner-gov {
+  border: 3px solid var(--gov-border-light);
+  border-top-color: var(--gov-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--gov-background-tertiary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gov-border-heavy);
+  border-radius: var(--gov-radius);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gov-primary);
+}
+
+/* 选中文本样式 */
+::selection {
+  background-color: var(--gov-primary);
+  color: var(--gov-text-inverse);
+}
+
+/* 焦点样式 */
+:focus-visible {
+  outline: 2px solid var(--gov-primary);
+  outline-offset: 2px;
+}
+
+/* 禁用状态 */
+.disabled-gov,
+[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  :root {
+    --gov-radius: 3px;
+    --gov-radius-lg: 6px;
+  }
+}
