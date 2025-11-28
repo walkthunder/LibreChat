@@ -163,6 +163,20 @@ else
     print_warning "跳过 librechat.yaml（文件不存在）"
 fi
 
+# 传输 nginx 配置（deploy-compose.yml 需要）
+print_info "传输 nginx 配置..."
+$SSH_CMD "mkdir -p $SERVER_PATH/client"
+$SCP_CMD "client/nginx.conf" "$SERVER_USER@$SERVER_IP:$SERVER_PATH/client/"
+if [ $? -ne 0 ]; then
+    print_error "nginx 配置传输失败"
+    exit 1
+fi
+print_success "nginx 配置传输成功"
+    fi
+else
+    print_warning "跳过 librechat.yaml（文件不存在）"
+fi
+
 print_info "传输远程部署脚本..."
 $SCP_CMD "$SCRIPT_DIR/remote-deploy.sh" "$SERVER_USER@$SERVER_IP:$SERVER_PATH/"
 if [ $? -ne 0 ]; then
