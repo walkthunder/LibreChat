@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { ChevronDown } from 'lucide-react';
+import { useGetStartupConfig } from '~/data-provider';
 
 interface LinkItem {
   title: string;
@@ -11,7 +12,7 @@ interface LinkCategory {
   links: LinkItem[];
 }
 
-const footerLinksData: LinkCategory[] = [
+const defaultFooterLinksData: LinkCategory[] = [
   {
     title: '友情链接',
     links: [
@@ -80,77 +81,121 @@ const footerLinksData: LinkCategory[] = [
 ];
 
 export default function FooterLinks() {
-  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
+  const { data: config } = useGetStartupConfig();
+  const [openPopover, setOpenPopover] = useState<string | null>(null);
+  const popoverRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
-  const toggleCategory = (title: string) => {
-    setExpandedCategories((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(title)) {
-        newSet.delete(title);
-      } else {
-        newSet.add(title);
+  // Use config data if available, otherwise use default data
+  const footerLinksData = config?.interface?.footerLinks || defaultFooterLinksData;
+  const supervisionEmail = config?.interface?.supervisionEmail || 'jijian@srrc.org.cn';
+  const supervisionPhone = config?.interface?.supervisionPhone || '010-68009150';
+
+  // Close popover when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (openPopover && popoverRefs.current[openPopover]) {
+        const popoverElement = popoverRefs.current[openPopover];
+        if (popoverElement && !popoverElement.contains(event.target as Node)) {
+          setOpenPopover(null);
+        }
       }
-      return newSet;
-    });
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [openPopover]);
+
+  const togglePopover = (title: string) => {
+    setOpenPopover(openPopover === title ? null : title);
   };
 
   return (
-    <div className="footer-gov border-t-2 border-gov-primary bg-gov-background-tertiary py-6">
+    <div className="footer-gov bg-gov-background-tertiary border-gov-primary border-t-2 py-3">
       <div className="mx-auto max-w-7xl px-4">
-        {/* 友情链接分类 */}
-        <div className="space-y-4">
+        {/* 友情链接分类 - 水平排列 */}
+        <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4">
           {footerLinksData.map((category) => (
-            <div key={category.title} className="rounded-gov border border-gov-border-light bg-white dark:bg-gray-800">
-              {/* 分类标题 */}
+            <div
+              key={category.title}
+              className="relative"
+              ref={(el) => (popoverRefs.current[category.title] = el)}
+            >
+              {/* 分类按钮 */}
               <button
-                onClick={() => toggleCategory(category.title)}
-                className="flex w-full items-center justify-between rounded-gov bg-gray-50 px-4 py-3 text-left font-semibold text-gov-primary transition-colors hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600"
-                aria-expanded={expandedCategories.has(category.title)}
+                onClick={() => togglePopover(category.title)}
+                className="text-gov-primary hover:text-gov-primary-light flex items-center gap-1 rounded-md bg-white px-3 py-2 text-xs font-semibold shadow-sm transition-all hover:shadow-md dark:bg-gray-800 dark:hover:bg-gray-700 md:px-4 md:text-sm"
+                aria-expanded={openPopover === category.title}
               >
                 <span>{category.title}</span>
-                {expandedCategories.has(category.title) ? (
-                  <ChevronUp className="h-5 w-5" />
-                ) : (
-                  <ChevronDown className="h-5 w-5" />
-                )}
+                <ChevronDown
+                  className={`h-3 w-3 transition-transform md:h-4 md:w-4 ${
+                    openPopover === category.title ? 'rotate-180' : ''
+                  }`}
+                />
               </button>
 
-              {/* 链接列表 */}
-              {expandedCategories.has(category.title) && (
-                <div className="grid grid-cols-1 gap-2 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                  {category.links.map((link) => (
-                    <a
-                      key={link.url}
-                      href={link.url}
-                      target="_blank"
-                      rel="nofollow noopener noreferrer"
-                      className="link-gov rounded px-3 py-2 text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
-                      title={link.title}
-                    >
-                      {link.title}
-                    </a>
-                  ))}
+              {/* 悬浮窗 */}
+              {openPopover === category.title && (
+                <div className="absolute bottom-full left-1/2 z-50 mb-2 w-[85vw] max-w-md -translate-x-1/2 transform rounded-lg border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-800 md:w-96">
+                  {/* 箭头 */}
+                  <div className="absolute -bottom-2 left-1/2 h-4 w-4 -translate-x-1/2 rotate-45 transform border-b border-r border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"></div>
+
+                  {/* 内容 */}
+                  <div className="relative max-h-[60vh] overflow-y-auto rounded-lg p-3 md:max-h-96 md:p-4">
+                    <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                      {category.links.map((link) => (
+                        <a
+                          key={link.url}
+                          href={link.url}
+                          target="_blank"
+                          rel="nofollow noopener noreferrer"
+                          className="link-gov rounded px-2 py-2 text-xs transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 md:px-3"
+                          title={link.title}
+                          onClick={() => setOpenPopover(null)}
+                        >
+                          {link.title}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
           ))}
-        </div>
 
-        {/* 纪检监督信息 */}
-        <div className="mt-6 border-t border-gov-border-light pt-4 text-center text-sm text-gov-text-secondary">
-          <div className="space-y-1">
-            <p>
-              中心纪检监督举报信箱{' '}
+          {/* 纪检监督信息 - 紧凑显示，移动端隐藏 */}
+          <div className="text-gov-text-secondary ml-4 hidden border-l border-gray-300 pl-4 text-xs dark:border-gray-600 md:block">
+            <span>
+              纪检监督：
               <a
-                href="mailto:jijian@srrc.org.cn"
+                href={`mailto:${supervisionEmail}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="link-gov"
+                className="link-gov ml-1"
               >
-                jijian@srrc.org.cn
+                {supervisionEmail}
               </a>
-            </p>
-            <p>中心纪检监督举报电话 010-68009150</p>
+              {' | '}
+              {supervisionPhone}
+            </span>
+          </div>
+        </div>
+
+        {/* 移动端纪检监督信息 - 单独一行 */}
+        <div className="text-gov-text-secondary mt-3 border-t border-gray-300 pt-3 text-center text-xs dark:border-gray-600 md:hidden">
+          <div className="space-y-1">
+            <div>
+              纪检监督：
+              <a
+                href={`mailto:${supervisionEmail}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-gov ml-1"
+              >
+                {supervisionEmail}
+              </a>
+            </div>
+            <div>{supervisionPhone}</div>
           </div>
         </div>
       </div>

@@ -20,6 +20,7 @@ import { TermsAndConditionsModal } from '~/components/ui';
 import { Nav, MobileNav } from '~/components/Nav';
 import { useHealthCheck } from '~/data-provider';
 import { Banner } from '~/components/Banners';
+import FooterLinks from '~/components/Footer/FooterLinks';
 
 export default function Root() {
   const [showTerms, setShowTerms] = useState(false);
@@ -71,12 +72,17 @@ export default function Root() {
           <AgentsMapContext.Provider value={agentsMap}>
             <PromptGroupsProvider>
               <Banner onHeightChange={setBannerHeight} />
-              <div className="flex" style={{ height: `calc(100dvh - ${bannerHeight}px)` }}>
+              <div className="flex flex-col" style={{ height: `calc(100dvh - ${bannerHeight}px)` }}>
                 <div className="relative z-0 flex h-full w-full overflow-hidden">
                   <Nav navVisible={navVisible} setNavVisible={setNavVisible} />
                   <div className="relative flex h-full max-w-full flex-1 flex-col overflow-hidden">
                     <MobileNav navVisible={navVisible} setNavVisible={setNavVisible} />
-                    <Outlet context={{ navVisible, setNavVisible } satisfies ContextType} />
+                    <div className="flex flex-1 flex-col overflow-hidden">
+                      <div className="flex-1 overflow-auto">
+                        <Outlet context={{ navVisible, setNavVisible } satisfies ContextType} />
+                      </div>
+                      <FooterLinks />
+                    </div>
                   </div>
                 </div>
               </div>

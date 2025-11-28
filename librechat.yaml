@@ -33,10 +33,31 @@ interface:
   customWelcome: '欢迎使用无线随申查（开放版）'
   # 系统功能描述
   appDescription: '本系统为无线电监测站工作人员提供智能问答服务，协助处理无线电监测、干扰查找、设备检测、频谱分析等相关工作'
+  # 纪检监督信息
+  supervisionEmail: 'jijian@srrc.org.cn'
+  supervisionPhone: '010-68009150'
   # Enable/disable file search as a chatarea selection (default: true)
   # Note: This setting does not disable the Agents File Search Capability.
   # To disable the Agents Capability, see the Agents Endpoint configuration instead.
   fileSearch: true
+  # 友情链接配置（可选）
+  # footerLinks:
+  #   - title: '友情链接'
+  #     links:
+  #       - title: '中华人民共和国工业和信息化部'
+  #         url: 'http://www.miit.gov.cn'
+  #       - title: '北京东方波泰无线电频谱技术研究所有限公司'
+  #         url: 'http://www.oetsi.com'
+  #   - title: '地方频道'
+  #     links:
+  #       - title: '北京'
+  #         url: 'http://jxj.beijing.gov.cn/'
+  #       - title: '上海'
+  #         url: 'http://www.shanghai.gov.cn/'
+  #   - title: '国际链接'
+  #     links:
+  #       - title: '美国电子电气工程师学会'
+  #         url: 'http://www.ieee.org/index.html'
   # Privacy policy settings
   # privacyPolicy:
     # externalUrl: 'https://librechat.ai/privacy-policy'

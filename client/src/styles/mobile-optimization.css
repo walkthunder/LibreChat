@@ -1,0 +1,492 @@
+/**
+ * 移动端优化样式
+ * 针对无线随申查（开放版）的移动端体验优化
+ */
+
+/* ==================== 基础移动端优化 ==================== */
+
+/* 移动端字体大小调整 */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px; /* 从16px减小到14px */
+  }
+
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 13px; /* 小屏幕进一步减小 */
+  }
+}
+
+/* ==================== 触摸优化 ==================== */
+
+/* 增大触摸目标 */
+@media (max-width: 768px) {
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    min-height: 44px; /* iOS推荐的最小触摸目标 */
+    min-width: 44px;
+  }
+
+  /* 按钮内边距优化 */
+  .btn,
+  button {
+    padding: 12px 16px;
+  }
+
+  /* 链接内边距优化 */
+  a {
+    padding: 8px 4px;
+  }
+}
+
+/* 禁用移动端长按选择 */
+@media (max-width: 768px) {
+  .no-select-mobile {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+}
+
+/* ==================== 导航栏移动端优化 ==================== */
+
+@media (max-width: 768px) {
+  /* 侧边栏全屏显示 */
+  .nav-gov {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 80vw;
+    max-width: 320px;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .nav-gov.visible {
+    transform: translateX(0);
+  }
+
+  /* 遮罩层 */
+  .nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .nav-overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* ==================== 内容区域移动端优化 ==================== */
+
+@media (max-width: 768px) {
+  /* 主内容区域 */
+  .main-content {
+    padding: 12px;
+  }
+
+  /* 卡片间距 */
+  .card-gov {
+    margin-bottom: 12px;
+  }
+
+  /* 表单元素 */
+  .input-gov,
+  input,
+  textarea,
+  select {
+    font-size: 16px; /* 防止iOS自动缩放 */
+    padding: 12px;
+  }
+
+  /* 标题大小 */
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  h4 {
+    font-size: 1.125rem;
+  }
+}
+
+/* ==================== 聊天界面移动端优化 ==================== */
+
+@media (max-width: 768px) {
+  /* 消息气泡 */
+  .message-bubble {
+    max-width: 90%;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+
+  /* 输入框区域 */
+  .chat-input-container {
+    padding: 12px;
+    position: sticky;
+    bottom: 0;
+    background-color: var(--gov-background-secondary);
+    border-top: 1px solid var(--gov-border-light);
+  }
+
+  /* 输入框 */
+  .chat-input {
+    min-height: 44px;
+    max-height: 120px;
+    font-size: 16px;
+    padding: 12px 16px;
+  }
+
+  /* 发送按钮 */
+  .send-button {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px;
+  }
+}
+
+/* ==================== 模态框移动端优化 ==================== */
+
+@media (max-width: 768px) {
+  /* 模态框全屏显示 */
+  .modal-content,
+  [role='dialog'] {
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  /* 模态框头部 */
+  .modal-header {
+    padding: 16px;
+    position: sticky;
+    top: 0;
+    background-color: var(--gov-background-secondary);
+    border-bottom: 1px solid var(--gov-border-light);
+    z-index: 10;
+  }
+
+  /* 模态框内容 */
+  .modal-body {
+    padding: 16px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* 模态框底部 */
+  .modal-footer {
+    padding: 16px;
+    position: sticky;
+    bottom: 0;
+    background-color: var(--gov-background-secondary);
+    border-top: 1px solid var(--gov-border-light);
+  }
+}
+
+/* ==================== 表格移动端优化 ==================== */
+
+@media (max-width: 768px) {
+  /* 表格横向滚动 */
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table-gov {
+    min-width: 600px;
+  }
+
+  /* 或者使用卡片式布局 */
+  .table-card-mobile {
+    display: block;
+  }
+
+  .table-card-mobile thead {
+    display: none;
+  }
+
+  .table-card-mobile tbody,
+  .table-card-mobile tr {
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  .table-card-mobile td {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--gov-border-light);
+  }
+
+  .table-card-mobile td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    margin-right: 12px;
+  }
+}
+
+/* ==================== 列表移动端优化 ==================== */
+
+@media (max-width: 768px) {
+  /* 列表项 */
+  .list-item {
+    padding: 12px;
+    border-bottom: 1px solid var(--gov-border-light);
+  }
+
+  /* 列表项标题 */
+  .list-item-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  /* 列表项描述 */
+  .list-item-description {
+    font-size: 0.875rem;
+    color: var(--gov-text-secondary);
+  }
+}
+
+/* ==================== 底部导航移动端优化 ==================== */
+
+@media (max-width: 768px) {
+  /* 底部导航栏 */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background-color: var(--gov-background-secondary);
+    border-top: 1px solid var(--gov-border-light);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 100;
+    padding-bottom: env(safe-area-inset-bottom); /* iOS安全区域 */
+  }
+
+  .bottom-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    color: var(--gov-text-secondary);
+    text-decoration: none;
+    transition: var(--gov-transition);
+  }
+
+  .bottom-nav-item.active {
+    color: var(--gov-primary);
+  }
+
+  .bottom-nav-icon {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 4px;
+  }
+
+  .bottom-nav-label {
+    font-size: 0.75rem;
+  }
+}
+
+/* ==================== 安全区域适配 (iOS) ==================== */
+
+@supports (padding: env(safe-area-inset-top)) {
+  @media (max-width: 768px) {
+    /* 顶部安全区域 */
+    .header-gov {
+      padding-top: env(safe-area-inset-top);
+    }
+
+    /* 底部安全区域 */
+    .footer-gov,
+    .chat-input-container {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    /* 侧边安全区域 */
+    .nav-gov {
+      padding-left: env(safe-area-inset-left);
+    }
+  }
+}
+
+/* ==================== 横屏优化 ==================== */
+
+@media (max-width: 768px) and (orientation: landscape) {
+  /* 减小垂直内边距 */
+  .main-content {
+    padding: 8px 12px;
+  }
+
+  /* 减小标题大小 */
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  /* 隐藏不必要的元素 */
+  .hide-landscape {
+    display: none;
+  }
+}
+
+/* ==================== 性能优化 ==================== */
+
+@media (max-width: 768px) {
+  /* 减少动画 */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* 优化滚动性能 */
+  .scroll-container {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+    will-change: scroll-position;
+  }
+
+  /* 硬件加速 */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+}
+
+/* ==================== 可访问性优化 ==================== */
+
+@media (max-width: 768px) {
+  /* 增大焦点指示器 */
+  :focus-visible {
+    outline: 3px solid var(--gov-primary);
+    outline-offset: 3px;
+  }
+
+  /* 跳过导航链接 */
+  .skip-to-content {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--gov-primary);
+    color: var(--gov-text-inverse);
+    padding: 8px 16px;
+    text-decoration: none;
+    z-index: 10000;
+  }
+
+  .skip-to-content:focus {
+    top: 0;
+  }
+}
+
+/* ==================== 特殊设备优化 ==================== */
+
+/* iPhone X 及以上 */
+@media (max-width: 768px) and (min-height: 812px) {
+  .content-wrapper {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 16px);
+  }
+}
+
+/* 小屏幕设备 (iPhone SE) */
+@media (max-width: 375px) {
+  html {
+    font-size: 12px;
+  }
+
+  .btn,
+  button {
+    padding: 10px 12px;
+    font-size: 0.875rem;
+  }
+
+  .card-gov {
+    padding: 12px;
+  }
+}
+
+/* 超小屏幕设备 */
+@media (max-width: 320px) {
+  html {
+    font-size: 11px;
+  }
+
+  .main-content {
+    padding: 8px;
+  }
+}
+
+/* ==================== 打印样式 ==================== */
+
+@media print {
+  /* 隐藏不必要的元素 */
+  .nav-gov,
+  .footer-gov,
+  .bottom-nav,
+  button,
+  .no-print {
+    display: none !important;
+  }
+
+  /* 优化打印布局 */
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+
+  .main-content {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* 避免分页断裂 */
+  .card-gov,
+  .message-bubble {
+    page-break-inside: avoid;
+  }
+}
