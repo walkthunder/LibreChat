@@ -36,6 +36,9 @@ interface:
   # 纪检监督信息
   supervisionEmail: 'jijian@srrc.org.cn'
   supervisionPhone: '010-68009150'
+  # 主办单位信息
+  organizationPrimary: '上海无线电监测站'
+  # organizationSecondary: '国家无线电频谱管理中心'
   # Enable/disable file search as a chatarea selection (default: true)
   # Note: This setting does not disable the Agents File Search Capability.
   # To disable the Agents Capability, see the Agents Endpoint configuration instead.

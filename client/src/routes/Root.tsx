@@ -21,6 +21,7 @@ import { Nav, MobileNav } from '~/components/Nav';
 import { useHealthCheck } from '~/data-provider';
 import { Banner } from '~/components/Banners';
 import FooterLinks from '~/components/Footer/FooterLinks';
+import GovHeader from '~/components/Header/GovHeader';
 
 export default function Root() {
   const [showTerms, setShowTerms] = useState(false);
@@ -73,6 +74,9 @@ export default function Root() {
             <PromptGroupsProvider>
               <Banner onHeightChange={setBannerHeight} />
               <div className="flex flex-col" style={{ height: `calc(100dvh - ${bannerHeight}px)` }}>
+                {/* 政府风格Header */}
+                <GovHeader />
+
                 <div className="relative z-0 flex h-full w-full overflow-hidden">
                   <Nav navVisible={navVisible} setNavVisible={setNavVisible} />
                   <div className="relative flex h-full max-w-full flex-1 flex-col overflow-hidden">

@@ -547,6 +547,8 @@ export const interfaceSchema = z
       .optional(),
     supervisionEmail: z.string().optional(),
     supervisionPhone: z.string().optional(),
+    organizationPrimary: z.string().optional(),
+    organizationSecondary: z.string().optional(),
     endpointsMenu: z.boolean().optional(),
     modelSelect: z.boolean().optional(),
     parameters: z.boolean().optional(),

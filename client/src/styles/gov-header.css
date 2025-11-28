@@ -1,0 +1,88 @@
+/**
+ * 政府风格Header样式
+ */
+
+.header-gov {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--gov-background-secondary);
+  border-bottom: 2px solid var(--gov-primary);
+  box-shadow: var(--gov-shadow);
+}
+
+/* Logo动画 */
+.header-gov img {
+  transition: transform 0.3s ease;
+}
+
+.header-gov img:hover {
+  transform: scale(1.05);
+}
+
+/* 链接样式 */
+.header-gov a {
+  color: var(--gov-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.header-gov a:hover {
+  color: var(--gov-primary-light);
+}
+
+/* 二维码悬浮窗动画 */
+.header-gov .qrcode-popup {
+  animation: fadeInDown 0.2s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+  .header-gov {
+    position: relative; /* 移动端不固定 */
+  }
+
+  .header-gov h1 {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-gov {
+    padding: 8px 12px;
+  }
+
+  .header-gov h1 {
+    font-size: 0.875rem;
+  }
+
+  .header-gov p {
+    font-size: 0.625rem;
+  }
+}
+
+/* 打印样式 */
+@media print {
+  .header-gov {
+    position: static;
+    border-bottom: 1px solid #000;
+    box-shadow: none;
+  }
+
+  .header-gov button,
+  .header-gov a[href*='mail'],
+  .header-gov a[href*='en'] {
+    display: none;
+  }
+}

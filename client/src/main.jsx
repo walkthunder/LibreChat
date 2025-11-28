@@ -5,6 +5,7 @@ import App from './App';
 import './style.css';
 import './mobile.css';
 import './styles/gov-theme.css'; // 政府风格主题
+import './styles/gov-header.css'; // 政府风格Header样式
 import './styles/footer-links.css'; // 友情链接样式
 import './styles/mobile-optimization.css'; // 移动端优化样式
 import { ApiErrorBoundaryProvider } from './hooks/ApiErrorBoundaryContext';
