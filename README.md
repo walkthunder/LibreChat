@@ -46,6 +46,19 @@
   </a>
 </p>
 
+# 开发部署
+
+## 本地开发
+
+启动本地依赖的服务：
+pnpm run backend:deps
+
+启动服务端
+pnpm run backend:dev
+
+启动前端
+pnpm run frontend:dev
+
 
 # ✨ Features
 

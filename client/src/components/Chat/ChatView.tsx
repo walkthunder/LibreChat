@@ -1,12 +1,13 @@
-import { memo, useCallback } from 'react';
+import { memo, useCallback, useEffect, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useForm } from 'react-hook-form';
-import { Spinner } from '@librechat/client';
+import { Spinner, useToast } from '@librechat/client';
 import { useParams } from 'react-router-dom';
 import { Constants, buildTree } from 'librechat-data-provider';
+import { NotificationSeverity } from '~/common';
 import type { TMessage } from 'librechat-data-provider';
 import type { ChatFormValues } from '~/common';
-import { ChatContext, AddedChatContext, useFileMapContext, ChatFormProvider } from '~/Providers';
+import { ChatContext, AddedChatContext, useFileMapContext, ChatFormProvider, useUrlParamsContext } from '~/Providers';
 import { useChatHelpers, useAddedResponse, useSSE } from '~/hooks';
 import ConversationStarters from './Input/ConversationStarters';
 import { useGetMessagesByConvoId } from '~/data-provider';
@@ -34,6 +35,13 @@ function ChatView({ index = 0 }: { index?: number }) {
   const rootSubmission = useRecoilValue(store.submissionByIndex(index));
   const addedSubmission = useRecoilValue(store.submissionByIndex(index + 1));
   const centerFormOnLanding = useRecoilValue(store.centerFormOnLanding);
+  const { showToast } = useToast();
+  
+  // Get URL parameters
+  const { urlParams } = useUrlParamsContext();
+  
+  // Track if auto-send has been executed
+  const autoSendExecutedRef = useRef(false);
 
   const fileMap = useFileMapContext();
 
@@ -55,8 +63,76 @@ function ChatView({ index = 0 }: { index?: number }) {
   useSSE(addedSubmission, addedChatHelpers, true);
 
   const methods = useForm<ChatFormValues>({
-    defaultValues: { text: '' },
+    defaultValues: { text: urlParams.message || '' },
   });
+  
+  // Pre-fill message from URL parameter
+  useEffect(() => {
+    if (urlParams.message && methods.getValues('text') !== urlParams.message) {
+      methods.setValue('text', urlParams.message);
+    }
+  }, [urlParams.message, methods]);
+  
+  // Auto-send message if autoSend parameter is true
+  useEffect(() => {
+    // Only execute auto-send once and when conditions are met
+    if (
+      urlParams.autoSend &&
+      urlParams.message &&
+      !autoSendExecutedRef.current &&
+      !isLoading &&
+      conversationId &&
+      conversationId !== Constants.NEW_CONVO
+    ) {
+      // Wait for conversation to be fully initialized
+      const timer = setTimeout(() => {
+        try {
+          // Trigger form submission
+          const formElement = document.querySelector('form[data-testid="text-input-form"]');
+          if (formElement) {
+            const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+            const submitted = formElement.dispatchEvent(submitEvent);
+            
+            if (submitted) {
+              autoSendExecutedRef.current = true;
+              console.log('Auto-send: Message submitted successfully');
+            } else {
+              // Submission was prevented, keep message in input
+              console.warn('Auto-send: Submission was prevented');
+              showToast({
+                message: 'Message could not be sent automatically. Please review and send manually.',
+                severity: NotificationSeverity.WARNING,
+                duration: 4000,
+              });
+            }
+          } else {
+            console.error('Auto-send: Form element not found');
+            showToast({
+              message: 'Failed to auto-send message. Please try sending manually.',
+              severity: NotificationSeverity.ERROR,
+              duration: 4000,
+            });
+          }
+        } catch (error) {
+          console.error('Auto-send failed:', error);
+          // Ensure message remains in input field by not clearing it
+          showToast({
+            message: 'Failed to auto-send message. The message has been retained in the input field.',
+            severity: NotificationSeverity.ERROR,
+            duration: 5000,
+          });
+        }
+      }, 500); // Small delay to ensure everything is initialized
+      
+      return () => clearTimeout(timer);
+    }
+  }, [
+    urlParams.autoSend,
+    urlParams.message,
+    isLoading,
+    conversationId,
+    showToast,
+  ]);
 
   let content: JSX.Element | null | undefined;
   const isLandingPage =
