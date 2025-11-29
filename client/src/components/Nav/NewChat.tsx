@@ -47,18 +47,6 @@ export default function NewChat({
 
   return (
     <>
-      {/* Logo Section */}
-      <div className="flex items-center justify-center border-b border-gray-200 py-4 dark:border-gray-700">
-        <img
-          src="/assets/radio-monitoring-logo.svg"
-          alt="无线随申查（开放版）"
-          className="h-10 w-auto"
-          onError={(e) => {
-            e.currentTarget.src = '/assets/logo.svg';
-          }}
-        />
-      </div>
-
       <div className="flex items-center justify-between py-[2px] md:py-2">
         <TooltipAnchor
           description={localize('com_nav_close_sidebar')}

@@ -20,7 +20,6 @@
 /* Logo动画 */
 .header-gov img {
   transition: transform 0.3s ease;
-  filter: brightness(0) invert(1);
 }
 
 .header-gov img:hover {
@@ -36,7 +35,7 @@
 }
 
 .header-gov a:hover {
-  opacity: 1;
+  opacity: 1
 }
 
 /* 二维码悬浮窗动画 */
