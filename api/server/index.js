@@ -59,19 +59,25 @@ const startServer = async () => {
   await performStartupChecks(appConfig);
   await updateInterfacePermissions(appConfig);
 
-  const indexPath = path.join(appConfig.paths.dist, 'index.html');
-  let indexHTML = fs.readFileSync(indexPath, 'utf8');
+  let indexHTML = '';
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  
+  // Only read index.html in production mode
+  if (!isDevelopment) {
+    const indexPath = path.join(appConfig.paths.dist, 'index.html');
+    indexHTML = fs.readFileSync(indexPath, 'utf8');
 
-  // In order to provide support to serving the application in a sub-directory
-  // We need to update the base href if the DOMAIN_CLIENT is specified and not the root path
-  if (process.env.DOMAIN_CLIENT) {
-    const clientUrl = new URL(process.env.DOMAIN_CLIENT);
-    const baseHref = clientUrl.pathname.endsWith('/')
-      ? clientUrl.pathname
-      : `${clientUrl.pathname}/`;
-    if (baseHref !== '/') {
-      logger.info(`Setting base href to ${baseHref}`);
-      indexHTML = indexHTML.replace(/base href="\/"/, `base href="${baseHref}"`);
+    // In order to provide support to serving the application in a sub-directory
+    // We need to update the base href if the DOMAIN_CLIENT is specified and not the root path
+    if (process.env.DOMAIN_CLIENT) {
+      const clientUrl = new URL(process.env.DOMAIN_CLIENT);
+      const baseHref = clientUrl.pathname.endsWith('/')
+        ? clientUrl.pathname
+        : `${clientUrl.pathname}/`;
+      if (baseHref !== '/') {
+        logger.info(`Setting base href to ${baseHref}`);
+        indexHTML = indexHTML.replace(/base href="\/"/, `base href="${baseHref}"`);
+      }
     }
   }
 
@@ -148,6 +154,15 @@ const startServer = async () => {
   app.use(ErrorController);
 
   app.use((req, res) => {
+    // In development mode, redirect to Vite dev server
+    if (isDevelopment) {
+      return res.status(200).json({
+        message: 'API server is running in development mode',
+        frontend: 'http://localhost:3090',
+        api: `http://localhost:${port}`,
+      });
+    }
+
     res.set({
       'Cache-Control': process.env.INDEX_CACHE_CONTROL || 'no-cache, no-store, must-revalidate',
       Pragma: process.env.INDEX_PRAGMA || 'no-cache',

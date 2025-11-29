@@ -75,8 +75,9 @@ print_success "配置文件检查通过"
 print_step "步骤 2/6: 构建 Docker 镜像"
 print_info "使用 Dockerfile: $DOCKERFILE"
 print_info "构建目标: $BUILD_TARGET"
+print_info "目标平台: linux/amd64"
 
-docker build -f "$DOCKERFILE" -t "$FULL_IMAGE_NAME" --target "$BUILD_TARGET" .
+docker build -f "$DOCKERFILE" -t "$FULL_IMAGE_NAME" --target "$BUILD_TARGET" --platform linux/amd64 .
 
 if [ $? -eq 0 ]; then
     print_success "Docker 镜像构建成功"
@@ -172,10 +173,6 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 print_success "nginx 配置传输成功"
-    fi
-else
-    print_warning "跳过 librechat.yaml（文件不存在）"
-fi
 
 print_info "传输远程部署脚本..."
 $SCP_CMD "$SCRIPT_DIR/remote-deploy.sh" "$SERVER_USER@$SERVER_IP:$SERVER_PATH/"

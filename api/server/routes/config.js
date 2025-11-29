@@ -125,6 +125,7 @@ router.get('/', async function (req, res) {
       emailLoginEnabled,
       registrationEnabled: !ldap?.enabled && isEnabled(process.env.ALLOW_REGISTRATION),
       socialLoginEnabled: isEnabled(process.env.ALLOW_SOCIAL_LOGIN),
+      anonymousLoginEnabled: isEnabled(process.env.ALLOW_ANONYMOUS_LOGIN),
       emailEnabled:
         (!!process.env.EMAIL_SERVICE || !!process.env.EMAIL_HOST) &&
         !!process.env.EMAIL_USERNAME &&

@@ -5,7 +5,7 @@ import { useOutletContext, useSearchParams } from 'react-router-dom';
 import type { TLoginLayoutContext } from '~/common';
 import { ErrorMessage } from '~/components/Auth/ErrorMessage';
 import SocialButton from '~/components/Auth/SocialButton';
-import { useAuthContext } from '~/hooks/AuthContext';
+import { useAuthContext, useAnonymousLogin } from '~/hooks';
 import { getLoginError } from '~/utils';
 import { useLocalize } from '~/hooks';
 import LoginForm from './LoginForm';
@@ -13,7 +13,7 @@ import LoginForm from './LoginForm';
 function Login() {
   const localize = useLocalize();
   const { showToast } = useToastContext();
-  const { error, setError, login } = useAuthContext();
+  const { error, setError, login, silentLogin } = useAuthContext();
   const { startupConfig } = useOutletContext<TLoginLayoutContext>();
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -22,6 +22,22 @@ function Login() {
 
   // Persist the disable flag locally so that once detected, auto-redirect stays disabled.
   const [isAutoRedirectDisabled, setIsAutoRedirectDisabled] = useState(disableAutoRedirect);
+
+  // Anonymous login support
+  const anonymousLoginEnabled = startupConfig?.anonymousLoginEnabled === true;
+  
+  useAnonymousLogin({
+    enabled: anonymousLoginEnabled && !isAutoRedirectDisabled,
+    onSuccess: (data) => {
+      console.log('[Login] Anonymous login successful, calling silentLogin');
+      silentLogin?.(data);
+    },
+    onError: (err) => {
+      console.error('[Login] Anonymous login failed:', err);
+      // Don't show error toast for anonymous login failures
+      // Just fall back to normal login
+    },
+  });
 
   useEffect(() => {
     const oauthError = searchParams?.get('error');
