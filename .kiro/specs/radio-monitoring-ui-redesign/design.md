@@ -979,3 +979,714 @@ export const FooterLinks: React.FC<FooterLinksProps> = ({ config }) => {
 #### 属性 9：纪检监督信息显示
 *对于任何*配置的纪检监督邮箱和电话，系统应当在友情链接板块底部正确显示
 **验证需求：11.5**
+
+## 登录页面详细设计
+
+### 布局结构
+
+登录页面采用全屏背景+居中卡片的布局方式：
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  [语言切换: 中文/EN]  [帮助图标]                              │
+│                                                               │
+│                    [无线电塔背景图 + 蓝色渐变]                 │
+│                                                               │
+│                  ┌─────────────────────────┐                 │
+│                  │    [Logo图标]           │                 │
+│                  │                         │                 │
+│                  │  无线电监测平台政务管理系统│                 │
+│                  │  安全、高效、积累的联务服务入口│              │
+│                  │                         │                 │
+│                  │  [用户图标] 请输入用户名  │                 │
+│                  │  [锁图标] 请输入密码      │                 │
+│                  │                         │                 │
+│                  │  □ 记住我    忘记密码？  │                 │
+│                  │                         │                 │
+│                  │      [登录按钮]         │                 │
+│                  │                         │                 │
+│                  │  没有账号？立即注册      │                 │
+│                  └─────────────────────────┘                 │
+│                                                               │
+│  © 2025 无线电监测平台 | 版权政策 | 联系我们                   │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 样式规范
+
+#### 背景层
+```css
+.login-page-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/assets/radio-tower-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.login-page-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, 
+    rgba(30, 58, 138, 0.85) 0%, 
+    rgba(59, 130, 246, 0.75) 100%
+  );
+}
+```
+
+#### 登录卡片
+```css
+.login-card {
+  position: relative;
+  z-index: 10;
+  width: 90%;
+  max-width: 450px;
+  margin: 0 auto;
+  padding: 48px 40px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.login-logo {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+  display: block;
+}
+
+.login-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1E3A8A;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.login-subtitle {
+  font-size: 14px;
+  color: #6B7280;
+  text-align: center;
+  margin-bottom: 32px;
+}
+```
+
+#### 输入框
+```css
+.login-input-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.login-input-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9CA3AF;
+  width: 20px;
+  height: 20px;
+}
+
+.login-input {
+  width: 100%;
+  padding: 12px 16px 12px 48px;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.login-input::placeholder {
+  color: #9CA3AF;
+}
+```
+
+#### 按钮和链接
+```css
+.login-remember-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.login-checkbox-label {
+  display: flex;
+  align-items: center;
+  color: #6B7280;
+  cursor: pointer;
+}
+
+.login-forgot-link {
+  color: #3B82F6;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.login-forgot-link:hover {
+  color: #2563EB;
+}
+
+.login-button {
+  width: 100%;
+  padding: 14px;
+  background: #1E3A8A;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.login-button:hover {
+  background: #1E40AF;
+}
+
+.login-button:active {
+  background: #1E3A8A;
+  transform: scale(0.98);
+}
+
+.login-register-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #6B7280;
+}
+
+.login-register-link a {
+  color: #3B82F6;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.login-register-link a:hover {
+  text-decoration: underline;
+}
+```
+
+#### 顶部工具栏
+```css
+.login-top-bar {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 20;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.language-switcher {
+  display: flex;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+}
+
+.language-option {
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.language-option.active {
+  background: rgba(255, 255, 255, 0.3);
+  font-weight: 500;
+}
+
+.help-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: background 0.2s;
+}
+
+.help-icon:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+```
+
+## 主界面详细设计
+
+### 布局结构
+
+主界面采用左侧导航+顶部栏+主内容区的经典布局：
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ [Logo]        │  [搜索框]              [用户: Admin] [日期]  │
+│ 无线随申查     │                                              │
+│ (开放版)      │                                              │
+├───────────────┼──────────────────────────────────────────────┤
+│               │                                              │
+│ 🏠 首页       │         智能政务助手                          │
+│               │                                              │
+│ 📡 无线电监测站│  您好，我是无线电政务智能助手，请问有什么可以帮助？│
+│               │                                              │
+│ 📄 公文管理    │  ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐      │
+│               │  │查询监测│ │生成报告│ │办理审批│ │查看信息│      │
+│ 🤖 智能助手    │  │管理流程│ │告警信息│ │入网申请│ │日报信息│      │
+│               │  └──────┘ └──────┘ └──────┘ └──────┘      │
+│ 📊 监测报告    │                                              │
+│               │                                              │
+│ 📖 法规查询    │                                              │
+│               │                                              │
+│ ⚙️ 系统设置    │                                              │
+│               │                                              │
+│               │  ┌────────────────────────────────────────┐ │
+│               │  │ 请输入您的问题...    🎤 📎        [发送] │ │
+│               │  └────────────────────────────────────────┘ │
+│               │                                              │
+│               │  © 2025 无线电监测站 | 京ICP备XXXXXXXXX号     │
+└───────────────┴──────────────────────────────────────────────┘
+```
+
+### 导航栏样式
+
+```css
+.main-sidebar {
+  width: 240px;
+  height: 100vh;
+  background: #1E3A8A;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+}
+
+.sidebar-header {
+  padding: 24px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-logo {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+}
+
+.sidebar-title {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.sidebar-menu {
+  flex: 1;
+  padding: 16px 0;
+  overflow-y: auto;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.menu-item.active {
+  background: rgba(59, 130, 246, 0.3);
+  color: white;
+  border-left: 3px solid #3B82F6;
+}
+
+.menu-item-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.menu-item-text {
+  font-size: 15px;
+}
+```
+
+### 顶部栏样式
+
+```css
+.main-header {
+  height: 64px;
+  background: white;
+  border-bottom: 1px solid #E5E7EB;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  margin-left: 240px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 240px;
+  z-index: 90;
+}
+
+.header-search {
+  flex: 1;
+  max-width: 500px;
+  display: flex;
+  gap: 8px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 10px 16px;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.search-button {
+  padding: 10px 24px;
+  background: #3B82F6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.search-button:hover {
+  background: #2563EB;
+}
+
+.header-user-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-name {
+  font-size: 14px;
+  color: #374151;
+}
+
+.user-role {
+  font-size: 12px;
+  color: #6B7280;
+}
+
+.current-date {
+  font-size: 14px;
+  color: #6B7280;
+}
+
+.language-toggle {
+  padding: 6px 12px;
+  border: 1px solid #D1D5DB;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.language-toggle:hover {
+  border-color: #3B82F6;
+  color: #3B82F6;
+}
+```
+
+### 主内容区样式
+
+```css
+.main-content {
+  margin-left: 240px;
+  margin-top: 64px;
+  padding: 24px;
+  min-height: calc(100vh - 64px);
+  background: #F9FAFB;
+}
+
+.assistant-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.assistant-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.assistant-title {
+  font-size: 32px;
+  font-weight: 600;
+  color: #1E3A8A;
+  margin-bottom: 16px;
+}
+
+.assistant-welcome {
+  font-size: 16px;
+  color: #6B7280;
+}
+
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.quick-action-card {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.quick-action-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.quick-action-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 12px;
+  color: #3B82F6;
+}
+
+.quick-action-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 4px;
+}
+
+.quick-action-subtitle {
+  font-size: 14px;
+  color: #6B7280;
+}
+
+.chat-input-container {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  font-size: 14px;
+  resize: none;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: #3B82F6;
+}
+
+.input-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.input-action-button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.input-action-button:hover {
+  background: #F3F4F6;
+  border-color: #3B82F6;
+}
+
+.send-button {
+  padding: 12px 24px;
+  background: #3B82F6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.send-button:hover {
+  background: #2563EB;
+}
+```
+
+### 响应式设计
+
+```css
+/* 平板设备 */
+@media (max-width: 1024px) {
+  .main-sidebar {
+    width: 200px;
+  }
+  
+  .main-header {
+    margin-left: 200px;
+    left: 200px;
+  }
+  
+  .main-content {
+    margin-left: 200px;
+  }
+  
+  .quick-actions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 移动设备 */
+@media (max-width: 768px) {
+  .main-sidebar {
+    width: 100%;
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+  }
+  
+  .main-sidebar.open {
+    transform: translateX(0);
+  }
+  
+  .main-header {
+    margin-left: 0;
+    left: 0;
+  }
+  
+  .main-content {
+    margin-left: 0;
+  }
+  
+  .header-search {
+    max-width: none;
+  }
+  
+  .quick-actions {
+    grid-template-columns: 1fr;
+  }
+  
+  .login-card {
+    padding: 32px 24px;
+  }
+  
+  .login-top-bar {
+    top: 12px;
+    right: 12px;
+  }
+}
+
+/* 小屏幕移动设备 */
+@media (max-width: 480px) {
+  .assistant-title {
+    font-size: 24px;
+  }
+  
+  .quick-action-card {
+    padding: 16px;
+  }
+  
+  .chat-input-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .input-actions {
+    justify-content: space-between;
+  }
+  
+  .send-button {
+    width: 100%;
+  }
+}
+```
+
+## 组件实现清单
+
+### 新增组件
+
+1. **LoginBackground.tsx** - 登录页面背景组件
+2. **LoginCard.tsx** - 登录卡片组件
+3. **LanguageSwitcher.tsx** - 语言切换组件
+4. **MainSidebar.tsx** - 主界面侧边导航栏
+5. **MainHeader.tsx** - 主界面顶部栏
+6. **AssistantWelcome.tsx** - 智能助手欢迎区域
+7. **QuickActions.tsx** - 快捷功能按钮组件
+8. **ChatInputBar.tsx** - 聊天输入栏组件
+
+### 修改组件
+
+1. **AuthLayout.tsx** - 更新为新的登录页面布局
+2. **Root.tsx** - 更新主界面布局结构
+3. **Nav.tsx** - 改造为新的侧边导航栏
+4. **Header.tsx** - 改造为新的顶部栏
+
+## 正确性属性扩展
+
+#### 属性 10：登录页面背景渲染
+*对于任何*登录页面访问，系统应当正确显示背景图片和蓝色渐变叠加层
+**验证需求：12.1**
+
+#### 属性 11：导航栏菜单项高亮
+*对于任何*当前激活的菜单项，系统应当显示高亮状态（浅蓝色背景和左侧边框）
+**验证需求：13.4**
+
+#### 属性 12：响应式导航栏
+*对于任何*小于768px的屏幕宽度，导航栏应当可折叠并通过汉堡菜单控制
+**验证需求：16.2**
+
+#### 属性 13：触摸区域尺寸
+*对于任何*交互元素（按钮、链接等），在触摸设备上的可点击区域应当不小于44x44px
+**验证需求：16.5**

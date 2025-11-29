@@ -18,7 +18,7 @@
   /* 背景色 */
   --gov-background: #F9FAFB;
   --gov-background-secondary: #FFFFFF;
-  --gov-background-tertiary: #F3F4F6;
+  --gov-background-tertiary: #EEF3f7;
   
   /* 文字颜色 */
   --gov-text-primary: #111827;
@@ -328,6 +328,11 @@ body {
 [disabled] {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* 演示/主内容区域背景 */
+.bg-presentation {
+  background-color: var(--gov-background-tertiary);
 }
 
 /* 响应式调整 */

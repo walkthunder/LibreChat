@@ -1,0 +1,8 @@
+/* Government UI Styles - Import all custom styles */
+
+@import './login-page.css';
+@import './main-sidebar.css';
+@import './main-header.css';
+@import './assistant.css';
+@import './gov-theme.css';
+@import './footer-links.css';

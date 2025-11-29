@@ -37,7 +37,7 @@ export default function Header() {
   const isSmallScreen = useMediaQuery('(max-width: 768px)');
 
   return (
-    <div className="sticky top-0 z-10 flex h-14 w-full items-center justify-between bg-white p-2 font-semibold text-text-primary dark:bg-gray-800">
+    <div className="sticky top-0 z-10 flex h-14 w-full items-center justify-between p-2 font-semibold text-text-primary" style={{ backgroundColor: 'var(--gov-background-tertiary)', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.08)' }}>
       <div className="hide-scrollbar flex w-full items-center justify-between gap-2 overflow-x-auto">
         <div className="mx-1 flex items-center">
           <AnimatePresence initial={false}>

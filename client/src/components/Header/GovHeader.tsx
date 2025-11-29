@@ -33,7 +33,7 @@ export default function GovHeader() {
 
   return (
     <div className="header-gov bg-gov-background-secondary border-gov-primary border-b-2 shadow-sm">
-      <div className="mx-auto max-w-7xl px-4 py-3">
+      <div className="mx-auto px-4 py-3">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           {/* Logo区域 */}
           <div className="flex items-center gap-3">
@@ -49,9 +49,7 @@ export default function GovHeader() {
             </div>
             <div className="flex flex-col">
               <h1 className="text-gov-primary text-lg font-bold md:text-xl">{appTitle}</h1>
-              <p className="text-gov-text-secondary text-xs md:text-sm">
-                Radio Monitoring Platform
-              </p>
+              <p className="text-gov-text-secondary text-xs md:text-sm">上海无线电监测站</p>
             </div>
           </div>
 

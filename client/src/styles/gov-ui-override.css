@@ -1,0 +1,524 @@
+/**
+ * 政府风格UI覆盖样式 - 基于第二张参考图
+ * 
+ * 参考图特点：
+ * 1. 顶部：蓝色Header，Logo在左，搜索框在中间，用户信息在右
+ * 2. 左侧：深蓝色导航栏，垂直菜单
+ * 3. 主内容：浅灰色背景，居中显示欢迎信息和快捷功能卡片
+ * 4. 底部：白色输入框，圆角
+ */
+
+/* ==================== CSS变量 ==================== */
+
+:root {
+  --gov-blue-primary: #2B5BA6;
+  --gov-blue-dark: #1e3a8a;
+  --gov-blue-light: #4A90E2;
+  --gov-gray-bg: #F0F2F5;
+  --gov-white: #ffffff;
+  --gov-text-dark: #333333;
+  --gov-text-gray: #666666;
+  --gov-border: #E5E7EB;
+}
+
+/* ==================== 顶部Header - 蓝色背景 ==================== */
+
+/* Header容器 - 改为蓝色背景 */
+.header-gov {
+  background: var(--gov-blue-primary) !important;
+  border-bottom: none !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Header内的文字改为白色 */
+.header-gov * {
+  color: white !important;
+}
+
+/* Header中的Logo区域 */
+.header-gov .flex.items-center.gap-3 {
+  background: transparent !important;
+}
+
+/* Header中的Logo背景 */
+.header-gov .bg-gov-primary {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Header中的链接 */
+.header-gov a {
+  color: white !important;
+  opacity: 0.9;
+}
+
+.header-gov a:hover {
+  opacity: 1;
+}
+
+/* ==================== 左侧导航栏 - 深蓝色 ==================== */
+
+/* 导航栏容器 */
+.nav.active,
+nav[id="chat-history-nav"],
+.nav {
+  background: var(--gov-blue-dark) !important;
+  width: 200px !important;
+  min-width: 200px !important;
+  max-width: 200px !important;
+}
+
+/* 导航栏内所有文字 */
+.nav *,
+nav[id="chat-history-nav"] * {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* 新建对话按钮 */
+.nav button[aria-label*="新"],
+.nav button[aria-label*="New"],
+.nav a[href="/c/new"],
+.nav button:first-child {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  border-radius: 8px !important;
+  padding: 12px 16px !important;
+  margin: 12px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  transition: all 0.2s !important;
+}
+
+.nav button[aria-label*="新"]:hover,
+.nav button[aria-label*="New"]:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+}
+
+/* 对话列表项 */
+.nav a[href*="/c/"],
+.nav button[data-testid*="convo"],
+.nav div[role="button"] {
+  background: transparent !important;
+  border-radius: 8px !important;
+  padding: 10px 12px !important;
+  margin: 4px 12px !important;
+  font-size: 14px !important;
+  transition: all 0.2s !important;
+  border-left: 3px solid transparent !important;
+}
+
+.nav a[href*="/c/"]:hover,
+.nav button[data-testid*="convo"]:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 激活的对话项 */
+.nav a[href*="/c/"].active,
+.nav a[aria-current="page"],
+.nav button.active {
+  background: rgba(74, 144, 226, 0.3) !important;
+  border-left-color: #4A90E2 !important;
+}
+
+/* 搜索框 */
+.nav input[type="text"],
+.nav input[type="search"] {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 8px !important;
+  padding: 8px 12px !important;
+  font-size: 14px !important;
+  margin: 12px !important;
+}
+
+.nav input::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.nav input:focus {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  outline: none !important;
+}
+
+/* ==================== 主内容区 - 浅灰色背景 ==================== */
+
+/* 主容器背景 */
+.relative.flex.h-full.max-w-full.flex-1.flex-col.overflow-hidden,
+.flex.flex-1.flex-col.overflow-hidden,
+.flex.h-full.w-full.flex-col {
+  background: var(--gov-gray-bg) !important;
+}
+
+/* ==================== Landing页面 - 智能政务助手 ==================== */
+
+/* Landing页面容器 */
+.flex.h-full.transform-gpu.flex-col.items-center.justify-center {
+  background: var(--gov-gray-bg) !important;
+  padding: 40px 20px !important;
+}
+
+/* 欢迎标题 - "智能政务助手" */
+.flex.h-full.transform-gpu.flex-col.items-center.justify-center h1,
+.flex.h-full.transform-gpu.flex-col.items-center.justify-center .text-2xl,
+.flex.h-full.transform-gpu.flex-col.items-center.justify-center .text-3xl,
+.flex.h-full.transform-gpu.flex-col.items-center.justify-center .text-4xl {
+  color: var(--gov-blue-dark) !important;
+  font-weight: 600 !important;
+  font-size: 32px !important;
+  margin-bottom: 16px !important;
+}
+
+/* 欢迎语 - "您好，我是无线电政务智能助手..." */
+.flex.h-full.transform-gpu.flex-col.items-center.justify-center .text-text-secondary,
+.flex.h-full.transform-gpu.flex-col.items-center.justify-center p {
+  color: var(--gov-text-gray) !important;
+  font-size: 16px !important;
+  margin-bottom: 32px !important;
+}
+
+/* ==================== 快捷功能卡片 ==================== */
+
+/* 如果有快捷功能卡片容器 */
+.quick-actions,
+.grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 16px !important;
+  max-width: 1200px !important;
+  margin: 0 auto 32px auto !important;
+  padding: 0 20px !important;
+}
+
+/* 快捷功能卡片 */
+.quick-action-card,
+[class*="card"] {
+  background: white !important;
+  border-radius: 12px !important;
+  padding: 24px !important;
+  text-align: center !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  transition: all 0.2s !important;
+  cursor: pointer !important;
+}
+
+.quick-action-card:hover,
+[class*="card"]:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* 卡片图标 */
+.quick-action-icon {
+  width: 48px !important;
+  height: 48px !important;
+  margin: 0 auto 12px auto !important;
+  color: var(--gov-blue-light) !important;
+}
+
+/* 卡片标题 */
+.quick-action-title {
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  color: var(--gov-text-dark) !important;
+  margin-bottom: 4px !important;
+}
+
+/* 卡片副标题 */
+.quick-action-subtitle {
+  font-size: 14px !important;
+  color: var(--gov-text-gray) !important;
+}
+
+/* ==================== 底部输入框 - 白色圆角 ==================== */
+
+/* 输入框容器 */
+form[class*="stretch"],
+.sticky.bottom-0,
+[class*="composer"],
+.chat-input-container {
+  background: white !important;
+  border-radius: 12px !important;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08) !important;
+  padding: 16px 20px !important;
+  margin: 0 20px 20px 20px !important;
+  border: 1px solid var(--gov-border) !important;
+  max-width: 1200px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* 输入框本身 */
+textarea[placeholder*="消息"],
+textarea[placeholder*="Message"],
+textarea[placeholder*="问题"],
+textarea[id*="prompt"],
+.chat-input {
+  background: white !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 12px 16px !important;
+  font-size: 14px !important;
+  color: var(--gov-text-dark) !important;
+  resize: none !important;
+  min-height: 44px !important;
+}
+
+textarea:focus,
+.chat-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* 输入框底部按钮区域 */
+.input-actions,
+form > div:last-child {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin-top: 12px !important;
+}
+
+/* 语音输入按钮 */
+button[aria-label*="语音"],
+button[aria-label*="Voice"],
+.input-action-button {
+  background: transparent !important;
+  border: 1px solid var(--gov-border) !important;
+  border-radius: 8px !important;
+  width: 40px !important;
+  height: 40px !important;
+  padding: 0 !important;
+  color: var(--gov-text-gray) !important;
+  transition: all 0.2s !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+button[aria-label*="语音"]:hover,
+button[aria-label*="Voice"]:hover,
+.input-action-button:hover {
+  background: var(--gov-gray-bg) !important;
+  border-color: var(--gov-blue-light) !important;
+  color: var(--gov-blue-light) !important;
+}
+
+/* 附件按钮 */
+button[aria-label*="附件"],
+button[aria-label*="Attach"] {
+  background: transparent !important;
+  border: 1px solid var(--gov-border) !important;
+  border-radius: 8px !important;
+  width: 40px !important;
+  height: 40px !important;
+  padding: 0 !important;
+  color: var(--gov-text-gray) !important;
+  transition: all 0.2s !important;
+}
+
+button[aria-label*="附件"]:hover,
+button[aria-label*="Attach"]:hover {
+  background: var(--gov-gray-bg) !important;
+  border-color: var(--gov-blue-light) !important;
+  color: var(--gov-blue-light) !important;
+}
+
+/* 发送按钮 - 蓝色 */
+button[aria-label*="发送"],
+button[aria-label*="Send"],
+button[data-testid*="send"],
+.send-button,
+button[type="submit"]:not([class*="secondary"]) {
+  background: var(--gov-blue-light) !important;
+  color: white !important;
+  border-radius: 8px !important;
+  padding: 10px 24px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  border: none !important;
+  transition: all 0.2s !important;
+  min-height: 40px !important;
+}
+
+button[aria-label*="发送"]:hover,
+button[aria-label*="Send"]:hover,
+.send-button:hover {
+  background: var(--gov-blue-primary) !important;
+}
+
+button[aria-label*="发送"]:disabled,
+.send-button:disabled {
+  background: #CCCCCC !important;
+  cursor: not-allowed !important;
+  opacity: 0.6 !important;
+}
+
+/* ==================== 消息气泡 ==================== */
+
+/* 用户消息 - 蓝色 */
+.bg-user-message,
+[class*="user"] [class*="message"] {
+  background: var(--gov-blue-light) !important;
+  color: white !important;
+  border-radius: 12px 12px 2px 12px !important;
+  padding: 12px 16px !important;
+  max-width: 70% !important;
+}
+
+/* AI消息 - 白色 */
+.bg-assistant-message,
+[class*="assistant"] [class*="message"] {
+  background: white !important;
+  color: var(--gov-text-dark) !important;
+  border-radius: 12px 12px 12px 2px !important;
+  padding: 12px 16px !important;
+  max-width: 70% !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* ==================== 滚动条 ==================== */
+
+/* 导航栏滚动条 */
+.nav::-webkit-scrollbar {
+  width: 4px !important;
+}
+
+.nav::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-radius: 2px !important;
+}
+
+/* 主内容区滚动条 */
+.overflow-auto::-webkit-scrollbar,
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px !important;
+}
+
+.overflow-auto::-webkit-scrollbar-track,
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb,
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15) !important;
+  border-radius: 3px !important;
+}
+
+/* ==================== 响应式设计 ==================== */
+
+@media (max-width: 1024px) {
+  /* 平板 - 快捷功能卡片2列 */
+  .quick-actions,
+  .grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* 移动端 - 导航栏全宽 */
+  .nav.active {
+    width: 100% !important;
+    max-width: 280px !important;
+  }
+
+  /* 快捷功能卡片1列 */
+  .quick-actions,
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 输入框 */
+  form[class*="stretch"] {
+    margin: 0 10px 10px 10px !important;
+    padding: 12px 16px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* 小屏幕 */
+  .nav.active {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* 标题字体 */
+  .flex.h-full.transform-gpu.flex-col.items-center.justify-center h1 {
+    font-size: 24px !important;
+  }
+
+  /* 输入框按钮 */
+  button[aria-label*="语音"],
+  button[aria-label*="附件"] {
+    width: 36px !important;
+    height: 36px !important;
+  }
+}
+
+/* ==================== 深色模式 ==================== */
+
+.dark .header-gov {
+  background: var(--gov-blue-dark) !important;
+}
+
+.dark .nav.active {
+  background: #1a1a2e !important;
+}
+
+.dark form[class*="stretch"],
+.dark .chat-input-container {
+  background: #1f2937 !important;
+  border-color: #374151 !important;
+}
+
+.dark textarea,
+.dark .chat-input {
+  background: #374151 !important;
+  color: white !important;
+}
+
+.dark .bg-assistant-message {
+  background: #1f2937 !important;
+  color: white !important;
+}
+
+.dark .quick-action-card {
+  background: #1f2937 !important;
+  color: white !important;
+}
+
+/* ==================== 动画 ==================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* ==================== 打印样式 ==================== */
+
+@media print {
+  .nav,
+  .header-gov,
+  form,
+  button {
+    display: none !important;
+  }
+
+  .relative.flex.h-full.max-w-full.flex-1.flex-col.overflow-hidden {
+    background: white !important;
+  }
+}

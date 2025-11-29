@@ -6,14 +6,21 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background-color: var(--gov-background-secondary);
-  border-bottom: 2px solid var(--gov-primary);
-  box-shadow: var(--gov-shadow);
+  background: linear-gradient(135deg, #2B5BA6 0%, #4A90E2 100%);
+  border-bottom: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Header内所有文字改为白色 */
+.header-gov,
+.header-gov * {
+  color: white !important;
 }
 
 /* Logo动画 */
 .header-gov img {
   transition: transform 0.3s ease;
+  filter: brightness(0) invert(1);
 }
 
 .header-gov img:hover {
@@ -22,13 +29,14 @@
 
 /* 链接样式 */
 .header-gov a {
-  color: var(--gov-primary);
+  color: white !important;
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: opacity 0.2s ease;
+  opacity: 0.9;
 }
 
 .header-gov a:hover {
-  color: var(--gov-primary-light);
+  opacity: 1;
 }
 
 /* 二维码悬浮窗动画 */

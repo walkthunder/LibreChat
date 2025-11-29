@@ -6,6 +6,9 @@ import SocialLoginRender from './SocialLoginRender';
 import { BlinkAnimation } from './BlinkAnimation';
 import { Banner } from '../Banners';
 import Footer from './Footer';
+import LoginBackground from './LoginBackground';
+import LanguageSwitcher from '../Common/LanguageSwitcher';
+import '~/styles/login-page.css';
 
 function AuthLayout({
   children,
@@ -56,44 +59,42 @@ function AuthLayout({
     return null;
   };
 
+  const subtitle = '安全、高效、积累的联务服务入口';
+
   return (
-    <div className="relative flex min-h-screen flex-col bg-white dark:bg-gray-900">
+    <div className="relative flex min-h-screen flex-col">
       <Banner />
+      <LoginBackground />
+      <LanguageSwitcher showHelp={true} />
       <BlinkAnimation active={isFetching}>
-        <div className="mt-6 h-16 w-full bg-cover">
-          <img
-            src="assets/radio-monitoring-logo.svg"
-            className="h-full w-full object-contain"
-            alt={startupConfig?.appTitle ?? '无线随申查（开放版）'}
-            onError={(e) => {
-              // 如果自定义Logo加载失败，回退到默认Logo
-              const target = e.target as HTMLImageElement;
-              target.src = 'assets/logo.svg';
-            }}
-          />
+        <div className="relative z-10 flex min-h-screen items-center justify-center p-4">
+          <div className="login-card">
+            <img
+              src="assets/radio-monitoring-logo.svg"
+              className="login-logo"
+              alt={startupConfig?.appTitle ?? '无线随申查（开放版）'}
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = 'assets/logo.svg';
+              }}
+            />
+            {!hasStartupConfigError && !isFetching && header && (
+              <h1 className="login-title" style={{ userSelect: 'none' }}>
+                {header}
+              </h1>
+            )}
+            <p className="login-subtitle">{subtitle}</p>
+            <DisplayError />
+            {children}
+            {!pathname.includes('2fa') &&
+              (pathname.includes('login') || pathname.includes('register')) && (
+                <SocialLoginRender startupConfig={startupConfig} />
+              )}
+          </div>
         </div>
       </BlinkAnimation>
-      <DisplayError />
-      <div className="absolute bottom-0 left-0 md:m-4">
+      <div className="absolute bottom-4 left-4 z-20">
         <ThemeSelector />
-      </div>
-
-      <div className="flex flex-grow items-center justify-center">
-        <div className="w-authPageWidth overflow-hidden bg-white px-6 py-4 dark:bg-gray-900 sm:max-w-md sm:rounded-lg">
-          {!hasStartupConfigError && !isFetching && header && (
-            <h1
-              className="mb-4 text-center text-3xl font-semibold text-black dark:text-white"
-              style={{ userSelect: 'none' }}
-            >
-              {header}
-            </h1>
-          )}
-          {children}
-          {!pathname.includes('2fa') &&
-            (pathname.includes('login') || pathname.includes('register')) && (
-              <SocialLoginRender startupConfig={startupConfig} />
-            )}
-        </div>
       </div>
       <Footer startupConfig={startupConfig} />
     </div>
